@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duelo de Tap</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      color: white;
+      text-align: center;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    #game {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      max-width: 600px;
+    }
+    .player {
+      width: 40%;
+      padding: 20px;
+      border: 2px solid white;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+    button {
+      width: 100%;
+      padding: 20px;
+      font-size: 18px;
+      border: none;
+      border-radius: 10px;
+      background-color: #ff9800;
+      color: white;
+      cursor: pointer;
+    }
+    button:active {
+      background-color: #e68900;
+    }
+    #timer {
+      margin: 20px 0;
+      font-size: 22px;
+      font-weight: bold;
+    }
+    #winner {
+      margin-top: 30px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #00ffcc;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔥 Duelo de Tap 🔥</h1>
+  <p>Jugador 1 y Jugador 2 deben presionar su botón lo más rápido posible en 10 segundos.</p>
+  <div id="timer">Tiempo: 10</div>
+  <div id="game">
+    <div class="player">
+      <h2>Jugador 1</h2>
+      <button id="btn1">TAP!</button>
+      <p>Puntos: <span id="score1">0</span></p>
+    </div>
+    <div class="player">
+      <h2>Jugador 2</h2>
+      <button id="btn2">TAP!</button>
+      <p>Puntos: <span id="score2">0</span></p>
+    </div>
+  </div>
+  <div id="winner"></div>
+
+  <script>
+    let score1 = 0;
+    let score2 = 0;
+    let timeLeft = 10;
+    let gameActive = false;
+
+    const btn1 = document.getElementById("btn1");
+    const btn2 = document.getElementById("btn2");
+    const scoreDisplay1 = document.getElementById("score1");
+    const scoreDisplay2 = document.getElementById("score2");
+    const timerDisplay = document.getElementById("timer");
+    const winnerDisplay = document.getElementById("winner");
+
+    function startGame() {
+      gameActive = true;
+      score1 = 0;
+      score2 = 0;
+      timeLeft = 10;
+      scoreDisplay1.textContent = score1;
+      scoreDisplay2.textContent = score2;
+      winnerDisplay.textContent = "";
+
+      let countdown = setInterval(() => {
+        timeLeft--;
+        timerDisplay.textContent = "Tiempo: " + timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function endGame() {
+      gameActive = false;
+      if (score1 > score2) {
+        winnerDisplay.textContent = "🏆 Jugador 1 gana!";
+      } else if (score2 > score1) {
+        winnerDisplay.textContent = "🏆 Jugador 2 gana!";
+      } else {
+        winnerDisplay.textContent = "🤝 ¡Empate!";
+      }
+    }
+
+    btn1.addEventListener("click", () => {
+      if (gameActive) {
+        score1++;
+        scoreDisplay1.textContent = score1;
+      }
+    });
+
+    btn2.addEventListener("click", () => {
+      if (gameActive) {
+        score2++;
+        scoreDisplay2.textContent = score2;
+      }
+    });
+
+    // Comienza el juego automáticamente al cargar
+    window.onload = startGame;
+  </script>
+</body>
+</html>
